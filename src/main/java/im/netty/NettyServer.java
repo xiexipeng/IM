@@ -1,5 +1,12 @@
 package im.netty;
 
+import im.handle.InBoundHandlerA;
+import im.handle.InBoundHandlerB;
+import im.handle.InBoundHandlerC;
+import im.handle.LoginRequestHandler;
+import im.handle.MessageRequestHandler;
+import im.handle.PacketDecoder;
+import im.handle.PacketEncoder;
 import im.server.ServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
@@ -28,7 +35,10 @@ public class NettyServer {
 				.childHandler(new ChannelInitializer<NioSocketChannel>() {
 					@Override
 					protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
-						nioSocketChannel.pipeline().addLast(new ServerHandler());
+						nioSocketChannel.pipeline().addLast(new PacketDecoder());
+						nioSocketChannel.pipeline().addLast(new LoginRequestHandler());
+						nioSocketChannel.pipeline().addLast(new MessageRequestHandler());
+						nioSocketChannel.pipeline().addLast(new PacketEncoder());
 					}
 				});
 		serverBootstrap.bind(8080).addListener(new GenericFutureListener<Future<? super Void>>() {

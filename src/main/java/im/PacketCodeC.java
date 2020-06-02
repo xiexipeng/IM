@@ -28,6 +28,17 @@ public class PacketCodeC {
 		return buf;
 	}
 
+	public static void encode(ByteBuf buf, Packet packet) {
+		byte[] bytes = Serializer.DEFAULT.serialize(packet);
+
+		buf.writeInt(MAGIC_NUMBER);
+		buf.writeByte(packet.getVersion());
+		buf.writeByte(Serializer.DEFAULT.getSerializeAlgorithm());
+		buf.writeByte(packet.getCommand());
+		buf.writeInt(bytes.length);
+		buf.writeBytes(bytes);
+	}
+
 	public static Packet decode(ByteBuf byteBuf) {
 		byteBuf.skipBytes(4);
 		byteBuf.skipBytes(1);
