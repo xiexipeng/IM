@@ -5,6 +5,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.FixedLengthFrameDecoder;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
@@ -26,6 +27,7 @@ public class NettyServer {
 				.childHandler(new ChannelInitializer<NioSocketChannel>() {
 					@Override
 					protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
+						nioSocketChannel.pipeline().addLast(new FixedLengthFrameDecoder(12));
 						nioSocketChannel.pipeline().addLast(new FirstServerHandler());
 					}
 				});

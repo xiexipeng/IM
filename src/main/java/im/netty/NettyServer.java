@@ -1,18 +1,13 @@
 package im.netty;
 
-import im.handle.InBoundHandlerA;
-import im.handle.InBoundHandlerB;
-import im.handle.InBoundHandlerC;
-import im.handle.LoginRequestHandler;
-import im.handle.MessageRequestHandler;
-import im.handle.PacketDecoder;
-import im.handle.PacketEncoder;
+import im.handle.*;
 import im.server.ServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import netty.FirstServerHandler;
@@ -35,8 +30,11 @@ public class NettyServer {
 				.childHandler(new ChannelInitializer<NioSocketChannel>() {
 					@Override
 					protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
+//						nioSocketChannel.pipeline().addLast(new LifeCycleTestHandler());
+						nioSocketChannel.pipeline().addLast(new Spliter());
 						nioSocketChannel.pipeline().addLast(new PacketDecoder());
 						nioSocketChannel.pipeline().addLast(new LoginRequestHandler());
+						nioSocketChannel.pipeline().addLast(new AuthHandler());
 						nioSocketChannel.pipeline().addLast(new MessageRequestHandler());
 						nioSocketChannel.pipeline().addLast(new PacketEncoder());
 					}

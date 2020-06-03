@@ -3,16 +3,7 @@ package im.netty;
 import im.PacketCodeC;
 import im.client.ClientHandler;
 import im.common.LoginUtil;
-import im.handle.InBoundHandlerA;
-import im.handle.InBoundHandlerB;
-import im.handle.InBoundHandlerC;
-import im.handle.LoginResponseHander;
-import im.handle.MessageResponseHandler;
-import im.handle.OutBoundHandlerA;
-import im.handle.OutBoundHandlerB;
-import im.handle.OutBoundHandlerC;
-import im.handle.PacketDecoder;
-import im.handle.PacketEncoder;
+import im.handle.*;
 import im.packet.MessageRequestPacket;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -22,6 +13,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import netty.FirstClientHandler;
 
 import java.util.Date;
@@ -52,6 +44,7 @@ public class NettyClient {
 					@Override
 					public void initChannel(SocketChannel ch) {
 						// inBound，处理读数据的逻辑链
+						ch.pipeline().addLast(new Spliter());
 						ch.pipeline().addLast(new PacketDecoder());
 						ch.pipeline().addLast(new LoginResponseHander());
 						ch.pipeline().addLast(new MessageResponseHandler());
@@ -92,7 +85,7 @@ public class NettyClient {
 	private static void startConsoleThread(Channel channel) {
 		new Thread(() -> {
 			while (!Thread.interrupted()) {
-				if (LoginUtil.hasLogin(channel)) {
+//				if (LoginUtil.hasLogin(channel)) {
 					System.out.println("输入消息发送至服务端: ");
 					Scanner sc = new Scanner(System.in);
 					String line = sc.nextLine();
@@ -101,7 +94,7 @@ public class NettyClient {
 					messageRequestPacket.setMessage(line);
 					ByteBuf buf = PacketCodeC.encode(channel.alloc(), messageRequestPacket);
 					channel.writeAndFlush(buf);
-				}
+//				}
 			}
 		}).start();
 	}

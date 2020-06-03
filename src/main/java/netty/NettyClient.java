@@ -5,6 +5,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.FixedLengthFrameDecoder;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -32,6 +33,7 @@ public class NettyClient {
 				.handler(new ChannelInitializer<SocketChannel>() {
 					@Override
 					public void initChannel(SocketChannel ch) {
+						ch.pipeline().addLast(new FixedLengthFrameDecoder(13));
 						ch.pipeline().addLast(new FirstClientHandler());
 					}
 				});
