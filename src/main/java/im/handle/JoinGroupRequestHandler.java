@@ -3,6 +3,7 @@ package im.handle;
 import im.packet.JoinGroupRequestPacket;
 import im.packet.JoinGroupResponsePacket;
 import im.session.SessionUtil;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -13,7 +14,13 @@ import io.netty.channel.group.ChannelGroup;
  * @Time: 下午4:39
  * @Description:
  */
+@ChannelHandler.Sharable
 public class JoinGroupRequestHandler extends SimpleChannelInboundHandler<JoinGroupRequestPacket> {
+
+	public static final JoinGroupRequestHandler INSTANCE = new JoinGroupRequestHandler();
+
+	private JoinGroupRequestHandler() {
+	}
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, JoinGroupRequestPacket msg) throws Exception {

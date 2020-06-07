@@ -5,6 +5,7 @@ import im.packet.MessageResponsePacket;
 import im.session.Session;
 import im.session.SessionUtil;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -16,7 +17,14 @@ import java.util.Date;
  * @Time: 下午11:41
  * @Description:
  */
+@ChannelHandler.Sharable
 public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRequestPacket> {
+
+    public static final MessageRequestHandler INSTANCE = new MessageRequestHandler();
+
+    private MessageRequestHandler() {
+    }
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageRequestPacket msg) throws Exception {
         System.out.println(new Date() + ": 收到客户端消息: " + msg.getMessage());

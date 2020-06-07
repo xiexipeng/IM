@@ -32,14 +32,16 @@ public class NettyServer {
 					protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
 //						nioSocketChannel.pipeline().addLast(new LifeCycleTestHandler());
 						nioSocketChannel.pipeline().addLast(new Spliter());
-						nioSocketChannel.pipeline().addLast(new PacketDecoder());
-						nioSocketChannel.pipeline().addLast(new LoginRequestHandler());
+//						nioSocketChannel.pipeline().addLast(new PacketDecoder());
+						nioSocketChannel.pipeline().addLast(PacketCodecHandler.INSTANCE);
+						nioSocketChannel.pipeline().addLast(LoginRequestHandler.INSTANCE);
 						nioSocketChannel.pipeline().addLast(new AuthHandler());
-						nioSocketChannel.pipeline().addLast(new MessageRequestHandler());
-						nioSocketChannel.pipeline().addLast(new CreateGroupRequestHandler());
-						nioSocketChannel.pipeline().addLast(new JoinGroupRequestHandler());
-						nioSocketChannel.pipeline().addLast(new GroupMessageRequestHandler());
-						nioSocketChannel.pipeline().addLast(new PacketEncoder());
+//						nioSocketChannel.pipeline().addLast(new MessageRequestHandler());
+//						nioSocketChannel.pipeline().addLast(new CreateGroupRequestHandler());
+//						nioSocketChannel.pipeline().addLast(new JoinGroupRequestHandler());
+//						nioSocketChannel.pipeline().addLast(new GroupMessageRequestHandler());
+						nioSocketChannel.pipeline().addLast(IMHandler.INSTANCE);
+//						nioSocketChannel.pipeline().addLast(new PacketEncoder());
 					}
 				});
 		serverBootstrap.bind(8080).addListener(new GenericFutureListener<Future<? super Void>>() {

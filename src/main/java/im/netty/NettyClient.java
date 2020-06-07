@@ -50,13 +50,14 @@ public class NettyClient {
 					public void initChannel(SocketChannel ch) {
 						// inBound，处理读数据的逻辑链
 						ch.pipeline().addLast(new Spliter());
-						ch.pipeline().addLast(new PacketDecoder());
+//						ch.pipeline().addLast(new PacketDecoder());
+						ch.pipeline().addLast(PacketCodecHandler.INSTANCE);
 						ch.pipeline().addLast(new LoginResponseHander());
 						ch.pipeline().addLast(new MessageResponseHandler());
 						ch.pipeline().addLast(new CreateGroupResponseHandler());
 						ch.pipeline().addLast(new JoinGroupResponseHandler());
 						ch.pipeline().addLast(new GroupMessageResponseHandler());
-						ch.pipeline().addLast(new PacketEncoder());
+//						ch.pipeline().addLast(new PacketEncoder());
 
 					}
 				});

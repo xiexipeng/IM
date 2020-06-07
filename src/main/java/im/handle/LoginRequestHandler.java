@@ -7,6 +7,7 @@ import im.common.LoginUtil;
 import im.session.Session;
 import im.session.SessionUtil;
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -19,9 +20,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @Time: 下午11:32
  * @Description:
  */
+@ChannelHandler.Sharable
 public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginRequestPacket> {
 
     private static AtomicInteger userIdInc = new AtomicInteger(10001);
+
+    public static final LoginRequestHandler INSTANCE = new LoginRequestHandler();
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, LoginRequestPacket msg) throws Exception {
