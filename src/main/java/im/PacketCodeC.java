@@ -1,5 +1,9 @@
 package im;
 
+import im.packet.CreateGroupRequestPacket;
+import im.packet.CreateGroupResponsePacket;
+import im.packet.JoinGroupRequestPacket;
+import im.packet.JoinGroupResponsePacket;
 import im.packet.MessageRequestPacket;
 import im.packet.MessageResponsePacket;
 import io.netty.buffer.ByteBuf;
@@ -64,6 +68,14 @@ public class PacketCodeC {
 			return MessageRequestPacket.class;
 		} else if (command == 4) {
 			return MessageResponsePacket.class;
+		} else if (command == 5) {
+			return CreateGroupRequestPacket.class;
+		} else if (command == 6) {
+			return CreateGroupResponsePacket.class;
+		} else if (command == 7) {
+			return JoinGroupRequestPacket.class;
+		} else if (command == 8) {
+			return JoinGroupResponsePacket.class;
 		}
 		return null;
 	}
