@@ -49,6 +49,7 @@ public class NettyClient {
 					@Override
 					public void initChannel(SocketChannel ch) {
 						// inBound，处理读数据的逻辑链
+						ch.pipeline().addLast(new IMIdleStateHandler());
 						ch.pipeline().addLast(new Spliter());
 //						ch.pipeline().addLast(new PacketDecoder());
 						ch.pipeline().addLast(PacketCodecHandler.INSTANCE);
@@ -57,8 +58,8 @@ public class NettyClient {
 						ch.pipeline().addLast(new CreateGroupResponseHandler());
 						ch.pipeline().addLast(new JoinGroupResponseHandler());
 						ch.pipeline().addLast(new GroupMessageResponseHandler());
-//						ch.pipeline().addLast(new PacketEncoder());
-
+						ch.pipeline().addLast(new PacketEncoder());
+						ch.pipeline().addLast(new HeartBeatTimerHandler());
 					}
 				});
 		// 4.建立连接
