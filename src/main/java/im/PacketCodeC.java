@@ -2,6 +2,8 @@ package im;
 
 import im.packet.CreateGroupRequestPacket;
 import im.packet.CreateGroupResponsePacket;
+import im.packet.GroupMessageRequestPacket;
+import im.packet.GroupMessageResponsePacket;
 import im.packet.JoinGroupRequestPacket;
 import im.packet.JoinGroupResponsePacket;
 import im.packet.MessageRequestPacket;
@@ -76,6 +78,10 @@ public class PacketCodeC {
 			return JoinGroupRequestPacket.class;
 		} else if (command == 8) {
 			return JoinGroupResponsePacket.class;
+		} else if (command == 9) {
+			return GroupMessageRequestPacket.class;
+		} else if (command == 10) {
+			return GroupMessageResponsePacket.class;
 		}
 		return null;
 	}

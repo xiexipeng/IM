@@ -17,4 +17,8 @@ public interface Command {
 	Byte JOIN_GROUP_REQUEST = 7;
 
 	Byte JOIN_GROUP_RESPONSE = 8;
+
+	Byte GROUP_MESSAGE_REQUEST = 9;
+
+	Byte GROUP_MESSAGE_RESPONSE = 10;
 }

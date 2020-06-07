@@ -21,6 +21,7 @@ public class ConsoleCommadManager implements ConsoleCommad {
 		consoleCommadMap.put("send",new SendToUserCommand());
 		consoleCommadMap.put("group",new CreateGroupCommand());
 		consoleCommadMap.put("join",new JoinGroupCommand());
+		consoleCommadMap.put("sendgroup",new SendGroupMessageCommand());
 	}
 
 	@Override
