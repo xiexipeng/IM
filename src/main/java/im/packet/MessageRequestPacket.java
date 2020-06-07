@@ -13,10 +13,17 @@ import lombok.Data;
 @Data
 public class MessageRequestPacket extends Packet {
 
-	private String message;
+    private String toUserId;
 
-	@Override
-	public Byte getCommand() {
-		return Command.MESSAGE_REQUEST;
-	}
+    private String message;
+
+    public MessageRequestPacket(String toUserId, String message) {
+        this.toUserId = toUserId;
+        this.message = message;
+    }
+
+    @Override
+    public Byte getCommand() {
+        return Command.MESSAGE_REQUEST;
+    }
 }

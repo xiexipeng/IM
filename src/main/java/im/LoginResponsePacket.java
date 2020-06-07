@@ -11,14 +11,18 @@ import lombok.Data;
 @Data
 public class LoginResponsePacket extends Packet {
 
-	private Integer code;
+    private String userId;
 
-	private String msg;
+    private String userName;
 
-	private boolean success;
+    private Integer code;
 
-	@Override
-	public Byte getCommand() {
-		return Command.LOGIN_RESPONSE;
-	}
+    private String msg;
+
+    private boolean success;
+
+    @Override
+    public Byte getCommand() {
+        return Command.LOGIN_RESPONSE;
+    }
 }

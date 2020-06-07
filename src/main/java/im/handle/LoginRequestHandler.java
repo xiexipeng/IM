@@ -4,11 +4,14 @@ import im.LoginRequestPacket;
 import im.LoginResponsePacket;
 import im.PacketCodeC;
 import im.common.LoginUtil;
+import im.session.Session;
+import im.session.SessionUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @Author: xiexipeng
@@ -17,16 +20,27 @@ import java.util.Date;
  * @Description:
  */
 public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginRequestPacket> {
+
+    private static AtomicInteger userIdInc = new AtomicInteger(10001);
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, LoginRequestPacket msg) throws Exception {
         LoginResponsePacket loginResponsePacket = login(ctx, msg);
+        String userId = String.valueOf(userIdInc.incrementAndGet());
+        loginResponsePacket.setUserId(userId);
+        SessionUtil.bindSession(new Session(userId, msg.getUsername()), ctx.channel());
         ctx.channel().writeAndFlush(loginResponsePacket);
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        SessionUtil.unBindSession(ctx.channel());
     }
 
     private LoginResponsePacket login(ChannelHandlerContext ctx, LoginRequestPacket loginRequestPacket) {
         LoginResponsePacket responsePacket = new LoginResponsePacket();
         if (valid(loginRequestPacket)) {
-            System.out.println(new Date() + ": 登录成功");
+            System.out.println(new Date() + ": 用户" + loginRequestPacket.getUsername() + ": 登录成功");
             responsePacket.setCode(1);
             responsePacket.setMsg("登录成功");
             responsePacket.setSuccess(true);
@@ -41,7 +55,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
     }
 
     private boolean valid(LoginRequestPacket loginRequestPacket) {
-        if ("123456".equals(loginRequestPacket.getPassword()) && "xxp".equals(loginRequestPacket.getUsername())) {
+        if ("123456".equals(loginRequestPacket.getPassword())) {
             return true;
         }
         return false;

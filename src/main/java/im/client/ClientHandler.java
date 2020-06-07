@@ -25,7 +25,6 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		System.out.println(new Date() + ": 客户端开始登录");
 		LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
-		loginRequestPacket.setUserId(UUID.randomUUID().toString());
 		loginRequestPacket.setUsername("xxp");
 		loginRequestPacket.setPassword("123456");
 		ByteBuf byteBuf = PacketCodeC.encode(ctx.alloc(), loginRequestPacket);
